@@ -1,0 +1,15 @@
+# define model
+def lightcurve_model(xdata, a, b, c, d, e):
+    return a*xdata + b*np.sin(c*xdata+d)+e
+
+# exclude transit
+mask = (np.arange(len(xdata)) < 422) | (np.arange(len(xdata)) >= 565)
+
+fitted_curve = curve_fit(lightcurve_model,xdata[mask],ydata[mask],p0=[0.042, 0.004, 51, 0.15, 0.985])
+print(fitted_curve)
+yfit = lightcurve_model(xdata, 3.92751578e-02,2.76113494e-03,5.04732491e+01, 2.70277551e-01,9.85020568e-01)
+
+plt.plot(xdata, ydata)
+
+# plot fitted sine curve THROUGH the transit
+plt.plot(xdata,yfit)
